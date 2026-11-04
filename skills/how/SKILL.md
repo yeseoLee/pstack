@@ -6,11 +6,11 @@ disable-model-invocation: true
 
 # How
 
-In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in pstack skills to Claude Code.
+Another pstack skill named here, as the **name** skill or `/name`, lives at `../<name>/SKILL.md`. Read that file and follow it, because the `Skill` tool refuses most pstack skills. When you tell the user to type one, write `/pstack:<name>`.
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Every spawn is an `Agent` subagent with `subagent_type: "Explore"`. Each brief says "do not edit files", and you check `git status` after the spawns return. Explorers use the `how explorer` line in the `pstack-models.mdc` rule (default `grok-4.7-xhigh-fast`), and every explainer uses the `how explainer` line (default `claude-opus-5-5-xhigh`). Set `model` to that line's value, or to the default if the rule or the line is missing. Leave `model` unset when the value is `auto` or `inherit-parent`. If the Task tool rejects a slug, use the default and say so. If it rejects the default, use the closest valid slug of the same family from its error message. Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section of the **poteto-mode** skill.
+Every spawn is an `Agent` subagent with `subagent_type: "Explore"`. Each brief says "do not edit files", and you check `git status` after the spawns return. Explorers use the `how explorer` line in the `pstack-models.md` rule (default `haiku medium`), and every explainer uses the `how explainer` line (default `opus xhigh`). A value is `<model> <effort>`, passed as the `Agent` call's `model` and `effort`. Use that line's value, or the default if the rule or the line is missing. Leave both unset when the value is `inherit`. If the `Agent` tool rejects a value, use the default and say so. If it rejects the default too, follow the fallback in the Subagents section of the **poteto-mode** skill. Pick each subagent's effort for the job, per the Subagents section of the **poteto-mode** skill.
 
 ## 1. Assess complexity
 
