@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Lists pstack's skills, playbooks, and agents from the tree and checks what pstack/README.md and pstack/docs/guide
+// Lists pstack's skills, playbooks, and agents from the tree and checks what README.md and docs/guide
 // say about them: slash commands, relative links and anchors, the README tables, counts, and model names.
 // Exits 1 when the docs drift from the tree.
 
@@ -9,7 +9,7 @@ import { dirname, join, posix } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PSTACK = join(ROOT, "pstack");
+const PSTACK = ROOT;
 const GUIDE = "docs/guide";
 const SETUP = join(PSTACK, "skills", "setup-pstack", "SKILL.md");
 
@@ -39,7 +39,6 @@ const principles = skills.filter((name) => name.startsWith("principle-"));
 const commands = skills.filter((name) => !name.startsWith("principle-"));
 const playbooks = names(join(PSTACK, "skills", "poteto-mode", "playbooks"), isMarkdown).map((name) => name.slice(0, -3));
 const agents = names(join(PSTACK, "agents"), isMarkdown).map((name) => name.slice(0, -3));
-const teamKit = names(join(ROOT, "cursor-team-kit", "skills"), isSkill);
 const docs = ["README.md", ...names(join(PSTACK, GUIDE), isMarkdown).map((name) => `${GUIDE}/${name}`)];
 const text = new Map(docs.map((doc) => [doc, readFileSync(join(PSTACK, doc), "utf8")]));
 const setup = readFileSync(SETUP, "utf8");
@@ -95,8 +94,8 @@ for (const [doc, body] of text) {
     slashes++;
     if (skills.includes(name)) named.get(doc).add(name);
     else if (RENAMED.has(name)) fail(doc, index, `names /${name}, which Cursor now ships as /${RENAMED.get(name)}`);
-    else if (!teamKit.includes(name) && !EXTERNAL.has(name)) {
-      fail(doc, index, `names /${name}, which no pstack skill, cursor-team-kit skill, or listed built-in provides`);
+    else if (!EXTERNAL.has(name)) {
+      fail(doc, index, `names /${name}, which no pstack skill or listed built-in provides`);
     }
   }
   for (const { 1: href, index } of body.matchAll(LINK)) {
@@ -112,7 +111,7 @@ for (const [doc, body] of text) {
     }
   }
   for (const { 1: name, index } of body.matchAll(AGENT)) {
-    if (!agents.includes(name)) fail(doc, index, `names subagent_type "${name}", which pstack/agents does not ship`);
+    if (!agents.includes(name)) fail(doc, index, `names subagent_type "${name}", which agents/ does not ship`);
   }
   for (const { 0: id, index } of body.matchAll(MODEL_ID)) {
     if (!setup.includes(id)) fail(doc, index, `names model ${id}, which setup-pstack does not use`);
