@@ -44,7 +44,7 @@ A role value is `<tier> <effort>`, such as `opus low`. Codex has no `opus`, `son
 | Effort `max` | `xhigh`. |
 | `inherit` | Omit the model and the effort. |
 
-A model family is the tier. Two entries on different tiers count as different families, even when the tier line maps them to the same Codex model. Say so when that happens in a panel.
+A model family is the Codex model an entry maps to, not its tier. An entry with no model, because the value is `inherit` or the tiers line is missing, is the parent's model. Two entries that map to the same model are the same family. So when a skill needs a reviewer or judge from another family than the one that did the work, such as the Arena cross-judge or the review in the **show-me-your-work** skill, pick only an entry whose mapped model differs. When none does, skip that cross-family step the way the skill's own fallback says, or say "Skipped in Codex: cross-family review. No other model is mapped." when the skill has none. A panel whose seats map to the same model still runs, and you say that the panel is not diverse.
 
 ## setup-pstack
 
