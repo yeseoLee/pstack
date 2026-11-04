@@ -4,11 +4,11 @@ i'm [poteto](https://x.com/poteto). i'm not a president or ceo, but i've worked 
 
 there's a growing sense that ai writes too much slop code. i agree. i don't want to ship like a team of twenty slop artists. throughput without quality is not a goal i aspire to. if you want to go fast, go deep first. 
 
-**pstack is my answer.** these are the same skills i use every day to ship high quality code at Cursor. this turns cursor into a real engineering team. the goal is not to maximize loc, in fact it's the opposite. pstack helps you write less, but higher quality code.
+**pstack is my answer.** these are the same skills i use every day to ship high quality code at Cursor. this turns claude code into a real engineering team. the goal is not to maximize loc, in fact it's the opposite. pstack helps you write less, but higher quality code.
 
 **pstack gives you fearless parallelism.** when you can go deep on one agent and trust it to write good, verifiable code, you can truly parallelize with confidence. start multiple agents up with `poteto-mode` and trust that they'll apply rigorous engineering principles to their work.
 
-**cursor gives you the best of all worlds.** every frontier model has its strengths and weaknesses. use any model with pstack. in fact, many of my skills use multi-model workflows to take advantage of each model's unique strengths.
+**every role gets the model that fits it.** opus plans and judges, opus at low effort implements the plan, and haiku and sonnet do the read-only digging. the review panels pair opus with sonnet so one model's blind spots don't decide the result.
 
 fork it. improve it. make it yours. PRs are welcome! 
 
@@ -40,7 +40,7 @@ that's it. the other skills are situational, and the mode skill uses them for yo
 
 use [`/poteto-mode`](./skills/poteto-mode/SKILL.md) at the start of a task. it reads your request, picks from a set of playbooks, and runs the other skills as the steps need them.
 
-pick `/poteto-mode` from the `/` menu before you type your task, so cursor attaches the skill to the message.
+type `/pstack:poteto-mode` before your task, so claude code loads the skill with the message.
 
 ### just use [`/poteto-mode`](./skills/poteto-mode/SKILL.md)
 
@@ -97,9 +97,9 @@ when invoked it:
 
 the full rules and playbooks live in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/SKILL.md).
 
-to keep [`/poteto-mode`](./skills/poteto-mode/SKILL.md) on across turns, pick it from the `/` menu and press option+enter (mac) or alt+enter (windows) instead of enter. that makes it a [custom mode](https://cursor.com/docs/skills#using-a-skill-as-a-custom-mode), which cursor offers in the agents window and the cli. it stays in context every turn until you exit the mode. plain enter attaches it to one message only.
+claude code has no custom modes, so the skill fades as a long chat moves on. start each new task with `/pstack:poteto-mode`.
 
-[`/poteto-mode`](./skills/poteto-mode/SKILL.md) works extremely well with cursor's `/loop` command. you can make cursor work for many hours without sacrificing rigor.
+[`/poteto-mode`](./skills/poteto-mode/SKILL.md) works extremely well with claude code's `/loop` command. you can make claude code work for many hours without sacrificing rigor.
 
 ## skills
 
@@ -252,13 +252,9 @@ twenty-four short skills, one principle each. `poteto-mode` indexes them inline 
 
 </details>
 
-## not shipped here
-
-- `/create-skill` is a cursor built-in. in claude code, use the [authoring a skill playbook](./skills/poteto-mode/playbooks/authoring-a-skill.md).
-
 ## why are there no planning skills?
 
-cursor already has a great plan mode which works great with pstack. but personally, i don't believe in planning. the best spec is code. if you do want to make a plan, [`/poteto-mode`](./skills/poteto-mode/SKILL.md) covers it, but it's not a default. 
+claude code already has a great plan mode which works great with pstack. but personally, i don't believe in planning. the best spec is code. if you do want to make a plan, [`/poteto-mode`](./skills/poteto-mode/SKILL.md) covers it, but it's not a default. 
 
 ## make it yours
 
@@ -269,12 +265,6 @@ type [`/automate-me`](./skills/automate-me/SKILL.md). it mines your recent trans
 models are configurable too. type [`/setup-pstack`](./skills/setup-pstack/SKILL.md). it detects the models you have access to and writes a small always-applied rule mapping each role (code, judgment, the review panels) to a model. every skill reads it and falls back to sensible defaults when the rule is absent, so you override only what you want.
 
 when a default changes, a rule written before the change still pins the old default. delete those role lines, or delete the file, then run `/setup-pstack` again. a rerun keeps any role whose model differs from the default.
-
-## automations
-
-pstack also ships a dormant [benny automation pack](https://github.com/cursor/plugins/tree/main/pstack/automations/benny). benny triages slack issue reports, then reproduces and fixes confirmed bugs with real ui evidence. its files are not registered as slash skills.
-
-to set it up, point cursor at [`FOR_AGENTS.md`](https://github.com/cursor/plugins/blob/main/pstack/automations/benny/FOR_AGENTS.md). setup copies the pack into the target repository at `.cursor/automations/benny/`, enables pstack there for shared skills, and keeps user configuration outside the copied pack. benny runs on cursor automations, so it is cursor-only.
 
 ## license
 
