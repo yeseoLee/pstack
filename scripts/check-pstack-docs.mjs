@@ -13,10 +13,9 @@ const PSTACK = ROOT;
 const GUIDE = "docs/guide";
 const SETUP = join(PSTACK, "skills", "setup-pstack", "SKILL.md");
 
-// Commands that ship with Cursor or Claude Code, not in this repository. Nothing here can verify them, so add a name
-// only after a public Cursor or Claude Code doc shows it.
-const EXTERNAL = new Set(["add-plugin", "autopilot", "create-skill", "in-cloud", "loop", "plugin"]);
-const RENAMED = new Map([["babysit", "autopilot"]]);
+// Commands that ship with Claude Code, not in this repository. Nothing here can verify them, so add a name only after
+// a public Claude Code doc shows it.
+const EXTERNAL = new Set(["loop", "plugin"]);
 
 const SMALL = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split(" ");
 const TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
@@ -25,6 +24,7 @@ const CLAIM = /\b(?:(all|has|of|ships|the|with) )?(\d+|[a-z]+(?:-[a-z]+)?) (shor
 const SLASH = /(?<=^|[\s`(|"'>])\/(?:pstack:)?([a-z][a-z0-9-]*)(?![\w/<-])/gm;
 const LINK = /\]\(<?([^)\s>]+)>?(?:\s+"[^"]*")?\)/g;
 const AGENT = /subagent_type: "([^"]+)"/g;
+// Role values are `<model> <effort>`. A full model ID or a non-Claude model in the docs is drift.
 const MODEL_ID = /\b(?:claude-[a-z]+|grok|gpt)-\d(?:[\w.-]*\w)?/g;
 const MODEL_PROSE = /\b(opus|sonnet|grok) (\d+(?:\.\d+)?)\b/gi;
 
@@ -93,7 +93,6 @@ for (const [doc, body] of text) {
   for (const { 1: name, index } of body.matchAll(SLASH)) {
     slashes++;
     if (skills.includes(name)) named.get(doc).add(name);
-    else if (RENAMED.has(name)) fail(doc, index, `names /${name}, which Cursor now ships as /${RENAMED.get(name)}`);
     else if (!EXTERNAL.has(name)) {
       fail(doc, index, `names /${name}, which no pstack skill or listed built-in provides`);
     }
