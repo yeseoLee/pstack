@@ -14,7 +14,7 @@ fork it. improve it. make it yours. PRs are welcome!
 
 ## install
 
-this repository is a claude code fork of [cursor/plugins/pstack](https://github.com/cursor/plugins/tree/main/pstack).
+this repository is a claude code and codex fork of [cursor/plugins/pstack](https://github.com/cursor/plugins/tree/main/pstack). in claude code:
 
 ```bash
 /plugin marketplace add yeseoLee/pstack
@@ -24,6 +24,20 @@ this repository is a claude code fork of [cursor/plugins/pstack](https://github.
 claude code leaves auto-update off for third-party marketplaces, so pstack stays on the version you installed. to update by hand, run `claude plugin update pstack@pstack`.
 
 claude code prefixes plugin commands and agents, so `/poteto-mode` is `/pstack:poteto-mode`. `/pstack:setup-pstack` writes your model choices to `~/.claude/rules/pstack-models.md`.
+
+in codex, add the marketplace, then install pstack from the plugins browser:
+
+```bash
+codex plugin marketplace add yeseoLee/pstack
+```
+
+or link the skills into codex's user skill folder:
+
+```bash
+git clone https://github.com/yeseoLee/pstack ~/pstack && mkdir -p ~/.agents/skills && ln -s ~/pstack/skills/* ~/.agents/skills/
+```
+
+in codex you type a skill as `$poteto-mode`. run `$setup-pstack` once: it maps the opus, sonnet, and haiku roles to codex models, writes `~/.codex/pstack-models.md`, and installs the `poteto-agent` and `comment-sicko` custom agents. the [codex adapter](./docs/harness/codex.md) maps every other claude code name. after you change a skill or an agent, run `node scripts/build-codex.mjs` and commit the result. ci fails while the codex files are out of date.
 
 ## get started
 
