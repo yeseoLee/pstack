@@ -10,7 +10,7 @@ In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md
 
 ## Start
 
-Open a todolist with one entry per phase before launching anything.
+Open a todo list with one entry per phase before launching anything.
 
 1. Frame
 2. Fan out
@@ -26,9 +26,9 @@ Open a todolist with one entry per phase before launching anything.
 
 ## Phase B: Fan out
 
-Spawn all N workers in one message with `subagent_type: generalPurpose`, `environment: "cloud"`, `run_in_background: true`, and the step 3 model, left unset for `auto` or `inherit-parent`. Use `environment: "local"` only when the worker needs access to something on the user's computer.
+Spawn all N workers in one message with `subagent_type: "general-purpose"`, `isolation: "worktree"`, `run_in_background: true`, and the step 3 model, left unset for `auto` or `inherit-parent`. Omit `isolation` only when the worker must see this checkout's uncommitted state.
 
-When a worker must start from a non-default pushed branch, pass `cloud_base_branch`.
+When a worker must start from a non-default pushed branch, name the branch in its brief and tell it to check that branch out first.
 
 Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
 
