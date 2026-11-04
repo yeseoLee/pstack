@@ -2,12 +2,8 @@ name: Validate pstack
 
 on:
   pull_request:
-    paths:
-      - "pstack/**"
-      - "harness/**"
-      - "cursor-team-kit/**"
-      - "scripts/**"
-      - ".github/workflows/validate-pstack.yml"
+  push:
+    branches: [main]
 
 jobs:
   validate:
@@ -20,7 +16,5 @@ jobs:
       - run: npm install --no-save fast-check@4.5.3
       - name: Check pstack docs
         run: node scripts/check-pstack-docs.mjs
-      - name: Check generated pstack harness trees
-        run: node scripts/generate-pstack-harness-trees.mjs --check
       - name: Test pstack skill scripts
-        run: node --disable-warning=ExperimentalWarning --test pstack/skills/*/scripts/test/*.test.ts
+        run: node --disable-warning=ExperimentalWarning --test skills/*/scripts/test/*.test.ts
