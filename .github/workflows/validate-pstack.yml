@@ -14,6 +14,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-save fast-check@4.5.3
+      - name: Check Codex files
+        run: node scripts/build-codex.mjs --check
       - name: Check pstack docs
         run: node scripts/check-pstack-docs.mjs
       - name: Test pstack skill scripts

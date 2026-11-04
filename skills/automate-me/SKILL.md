@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Automate me
 
+In Codex, read [the Codex adapter](../../docs/harness/codex.md) once per session before you follow this skill. It maps the Claude Code names in pstack skills to Codex.
+
 Another pstack skill named here, as the **name** skill or `/name`, lives at `../<name>/SKILL.md`. Read that file and follow it, because the `Skill` tool refuses most pstack skills. When you tell the user to type one, write `/pstack:<name>`.
 
 A guided flow for turning the user's working conventions into a skill agents will follow. The output is one `-mode` skill tailored to them (e.g. `jay-mode`, `priya-mode`).

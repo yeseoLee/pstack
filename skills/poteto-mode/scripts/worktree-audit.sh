@@ -69,9 +69,24 @@ elif raw=$(gh pr list --author "@me" --state all --limit 1000 \
 fi
 [ -s "$prs" ] || echo "[]" > "$prs"
 
-# Transcripts dir: ~/.claude/projects/<repo path with each / and . changed to ->.
+# Claude Code transcripts: ~/.claude/projects/<repo path with each / and . changed to ->.
 slug=$(printf '%s' "$main_wt" | sed 's#[/.]#-#g')
 transcripts="$HOME/.claude/projects/$slug"
+
+# Codex sessions are not grouped by workspace. Keep a rollout only when the cwd on
+# its first line is this repo or one of its worktrees, so other projects' chats
+# are never read.
+codex_sessions=$(mktemp)
+if [ -d "$HOME/.codex/sessions" ]; then
+	worktrees=$(git worktree list --porcelain | awk '/^worktree /{print $2}')
+	find "$HOME/.codex/sessions" -type f -name 'rollout-*.jsonl' 2>/dev/null | while read -r f; do
+		cwd=$(head -n 1 "$f" | grep -o '"cwd":"[^"]*"' | head -n 1 | cut -d'"' -f4)
+		[ -z "$cwd" ] && continue
+		printf '%s\n' "$worktrees" | while read -r root; do
+			case "$cwd" in "$root"|"$root"/*) printf '%s\n' "$f"; break ;; esac
+		done
+	done > "$codex_sessions"
+fi
 now=$(date +%s)
 
 echo "# base: $base"
@@ -111,12 +126,13 @@ git worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r wt;
 	# Most recent chat whose transcript operated in this worktree. Match path
 	# followed by "/" or a quote so glint-482 does not match glint-482-r37.
 	last="-"; last_ts=0
-	if [ -d "$transcripts" ]; then
-		f=$(rg -l -e "${wt}/" -e "${wt}\"" "$transcripts" 2>/dev/null \
-			| xargs stat "${stat_fmt[@]}" 2>/dev/null | sort -rn | head -1)
-		if [ -n "$f" ]; then last_ts=$(echo "$f" | awk '{print $1}')
-			last=$(fmt_day "$last_ts" 2>/dev/null); fi
-	fi
+	f=$( {
+		[ -d "$transcripts" ] && rg -l -e "${wt}/" -e "${wt}\"" "$transcripts"
+		[ -s "$codex_sessions" ] && tr '\n' '\0' < "$codex_sessions" \
+			| xargs -0 rg -l -e "${wt}/" -e "${wt}\""
+	} 2>/dev/null | xargs stat "${stat_fmt[@]}" 2>/dev/null | sort -rn | head -1)
+	if [ -n "$f" ]; then last_ts=$(echo "$f" | awk '{print $1}')
+		last=$(fmt_day "$last_ts" 2>/dev/null); fi
 	recent=$([ "$last_ts" -gt 0 ] 2>/dev/null && [ $(( (now - last_ts) / 86400 )) -le 4 ] && echo yes || echo no)
 
 	case "$dirty" in wip:*) bucket=hold-wip ;; *)
@@ -131,4 +147,4 @@ git worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r wt;
 		"$size" "$age" "$merged" "$dirty" "$remote" "$pr" "$last" "$bucket" "$wt"
 done | sort -t$'\t' -k1,1 -rh
 
-rm -f "$prs"
+rm -f "$prs" "$codex_sessions"

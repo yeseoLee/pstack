@@ -5,6 +5,8 @@ description: Configure which models pstack uses per role and at what reasoning b
 
 # Setup pstack
 
+In Codex, read [the Codex adapter](../../docs/harness/codex.md) once per session before you follow this skill. It maps the Claude Code names in pstack skills to Codex.
+
 Write `~/.claude/rules/pstack-models.md`, a rule that sets pstack's model and effort per role. Claude Code loads every `.md` file in `~/.claude/rules/` into each new session, so every pstack skill sees the role lines.
 
 A role value is `<model> <effort>`, such as `opus low`. `model` is the `Agent` tool's `model` field and names the model family: `opus`, `sonnet`, `haiku`, or `fable`. `effort` is the `Agent` tool's `effort` field, on the ladder `max` > `xhigh` > `high` > `medium` > `low`. The value `inherit` means the role runs on the parent chat model, so the spawn omits `model` and `effort`.

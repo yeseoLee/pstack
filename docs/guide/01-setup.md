@@ -15,6 +15,14 @@ Claude Code confirms the plugin is installed.
 
 Claude Code prefixes plugin commands, so each command in this guide takes a `pstack:` prefix, such as `/pstack:setup-pstack`.
 
+In Codex, add the marketplace and install pstack from the plugins browser:
+
+```text
+codex plugin marketplace add yeseoLee/pstack
+```
+
+Or clone the repository and link each skill folder into `~/.agents/skills/`, which Codex scans for user skills. In Codex you type a skill with `$`, so `/setup-pstack` in this guide is `$setup-pstack`. The [Codex adapter](../harness/codex.md) covers the other differences, including how the `opus`, `sonnet`, and `haiku` roles map to Codex models.
+
 ## Pick your models
 
 Run:

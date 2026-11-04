@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Poteto help
 
+In Codex, read [the Codex adapter](../../docs/harness/codex.md) once per session before you follow this skill. It maps the Claude Code names in pstack skills to Codex.
+
 Another pstack skill named here, as the **name** skill or `/name`, lives at `../<name>/SKILL.md`. Read that file and follow it, because the `Skill` tool refuses most pstack skills. When you tell the user to type one, write `/pstack:<name>`.
 
 Answer the user's question about pstack, hand them a prompt they can send, and link the file the answer came from. For a help question, don't start the work. The user asked how, and a pstack run spends real tokens, so let them send the prompt.
@@ -45,7 +47,7 @@ Installing changes nothing until the user invokes a skill. Only `/setup-pstack` 
 
 If cost is the worry, say where the tokens go and how to spend fewer. pstack spends extra tokens on subagents and review panels. Rerun `/setup-pstack` and pick a smaller budget or cheaper models. A role set to `inherit` runs on the chat's model, which saves tokens when the chat runs on a cheaper model. Moving read-only roles to `haiku` saves the most. A shorter panel list runs fewer subagents, one for each entry. Save `/poteto-mode` for work that needs rigor.
 
-pstack installs in Claude Code with `/plugin marketplace add yeseoLee/pstack`, then `/plugin install pstack@pstack`. Each command takes a `pstack:` prefix, such as `/pstack:poteto-mode`.
+pstack installs in Claude Code with `/plugin marketplace add yeseoLee/pstack`, then `/plugin install pstack@pstack`. Each command takes a `pstack:` prefix, such as `/pstack:poteto-mode`. In Codex, add the marketplace with `codex plugin marketplace add yeseoLee/pstack` and install from the plugins browser, or link each skill folder into `~/.agents/skills/`. There a skill is typed as `$poteto-mode`, and `$setup-pstack` maps the model roles to Codex models.
 
 Other tools can read the skills, because they use the Agent Skills format. But most workflow skills, including `/poteto-mode`, `/how`, `/why`, and `/teach`, spawn Claude Code subagents with per-role models, and `/loop` is a Claude Code feature, so those parts may not work there.
 

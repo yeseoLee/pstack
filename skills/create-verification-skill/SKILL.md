@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Create a verification skill
 
+In Codex, read [the Codex adapter](../../docs/harness/codex.md) once per session before you follow this skill. It maps the Claude Code names in pstack skills to Codex.
+
 Another pstack skill named here, as the **name** skill or `/name`, lives at `../<name>/SKILL.md`. Read that file and follow it, because the `Skill` tool refuses most pstack skills. When you tell the user to type one, write `/pstack:<name>`.
 
 Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`.claude/skills/verify-<app>/`) tailored to the repo. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
